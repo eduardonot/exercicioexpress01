@@ -30,6 +30,19 @@ app.post('/set-user', function(req, res){
     return res.json(user)
 })
 
+app.post('/login', function(req, res){
+    let user = {
+        name: req.body.name,
+        pass: req.body.pass
+    }
+    const check = new validate(user)
+    
+
+    res.send('Login em manutenção')
+})
+
+
+
 app.listen(port, () => {
     console.log(`Conectado à porta ${port}`)
 })

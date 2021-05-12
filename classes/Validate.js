@@ -3,7 +3,6 @@ module.exports = class Validate {
     constructor(user){
         this.user = user
         this.warns = {}
-        this.isAble = false
     }
     userSignUp(){
         let mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -33,5 +32,10 @@ module.exports = class Validate {
 
     getSignUpError(){
         return this.warns
+    }
+
+    getUserLogin(){
+        console.log('Comparadando dados com o Banco de Dados')
+        console.log('Comparando se este ID telegram é válido')
     }
 }
