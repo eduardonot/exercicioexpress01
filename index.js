@@ -9,16 +9,25 @@ app.get('/', function (req, res){
     res.send('Bem-Vindo!')
 })
 
-app.post('/set-user', (req, res) => {
-    let user = req.body
+app.post('/set-user', function(req, res){
     let userID = 0
-    
-    if (!user['name']){
-        res.send("Insira um valor no campo name")
-        res.send("Teste")
+    let user = {
+        name: req.body.name,
+        email: req.body.email,
+        pass1: req.body.pass1,
+        pass2: req.body.pass2,
+        telegram_ID: req.body.telegram_ID
+    }
+    const check = new validate (user)
+    check.userSignUp()
+
+    if(check.userSignUp() == false){
+        console.log(check.warns)
+        return res.send(`Não foi possível cadastrar \n`)
     }
     Object.assign(user, {id: userID += 1})
-    res.json(user)
+    console.log('Usuário cadastrado com sucesso!')
+    return res.json(user)
 })
 
 app.listen(port, () => {
