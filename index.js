@@ -9,25 +9,29 @@ app.get('/', function (req, res){
     res.send('Bem-Vindo!')
 })
 
-app.post('/set-user', function(req, res){
+const authenticate = (req, res, next) => {
     let userID = 0
-    let user = {
-        name: req.body.name,
-        email: req.body.email,
-        pass1: req.body.pass1,
-        pass2: req.body.pass2,
-        telegram_ID: req.body.telegram_ID
-    }
-    const check = new validate (user)
+    let usuario = req.body
+    const check = new validate (usuario)
     check.userSignUp()
 
     if(check.userSignUp() == false){
         console.log(check.warns)
-        return res.send(`Não foi possível cadastrar \n`)
+        res.status(400).send('Não foi possivel cadastrar. Cheque seu console para mais informacoes!')
     }
-    Object.assign(user, {id: userID += 1})
-    console.log('Usuário cadastrado com sucesso!')
-    return res.json(user)
+    Object.assign(usuario, {id: userID += 1})
+    res.status(201).redirect('/login')
+}
+
+
+app.post('/set-user',authenticate, function(req, res){
+    let user = req.body
+    authenticate(user)
+    res.redirect('/login')
+})
+
+app.get('/login', (req, res) => {
+    res.send('Tela de Login')
 })
 
 app.post('/login', function(req, res){
