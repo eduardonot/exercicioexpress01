@@ -21,7 +21,7 @@ app.get('/', function (req, res){
     res.send('Bem-Vindo!')
 })
 
-const authenticate = (req, res) => {
+const authUserSignUp = (req, res) => {
     let warns = {}
     let user = req.body
     let mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -51,13 +51,14 @@ const authenticate = (req, res) => {
         .catch(err => res.status(400).send(err))
 }
 
-
-app.post('/set-user',authenticate, function(req, res){
+// USER
+app.post('/set-user',authUserSignUp, function(req, res){
     let user = req.body
-    authenticate(user)
+    authUserSignUp(user)
     res.redirect('/login')
 })
 
+// TASKS
 app.post('/task-create', (req, res) =>{
     if(!req.body.title){
         return res.status(400).send('Título não informado.')
@@ -68,8 +69,22 @@ app.post('/task-create', (req, res) =>{
         .catch(err => res.status(400).send(err))
 })
 
+app.get('/task-show/:id?&:title?&:status?', (req, res) => {
+    // buscar por id title ou status
+    if (!req.query){
+        Tasks.find()
+    }
+    const task_id = req.query.id
+    const title = req.query.title
+    const status = req.query.status
+    Tasks.find({
+        id: task_id,
+        title: title,
+        status: status
+    })
+}) 
  
-
+// LOGIN
 app.get('/login', (req, res) => {
     res.send('Tela de Login')
 })
