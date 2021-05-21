@@ -3,14 +3,11 @@ const app = express ()
 const validate = require('./classes/Validate')
 const mongoose = require('mongoose')
 const Tasks = require ('./schemas/tasks')
+const Users = require ('./schemas/users')
 const db = mongoose.connection
 const port = 5000
-mongoose.connect('mongodb://localhost/tasks', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true
-})
+
+mongoose.connect('mongodb://localhost/taskManager', {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true})
 
 app.use(express.json())
 db.on('error', console.error.bind(console, 'Connection error.'))
@@ -26,7 +23,6 @@ app.get('/', function (req, res){
 
 const authenticate = (req, res) => {
     let warns = {}
-    let userID = 0
     let user = req.body
     let mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
     let passFormat = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/
@@ -50,9 +46,9 @@ const authenticate = (req, res) => {
         console.log(warns)
         return res.status(400).send('Não foi possivel cadastrar. Cheque seu console para mais informacoes!')
     }
-
-    Object.assign(user, {id: userID += 1})
-    res.status(201).redirect('/login')
+    Users.create(req.body)
+        .then(data => res.json(data))
+        .catch(err => res.status(400).send(err))
 }
 
 
@@ -62,7 +58,7 @@ app.post('/set-user',authenticate, function(req, res){
     res.redirect('/login')
 })
 
-app.post('/task', (req, res) =>{
+app.post('/task-create', (req, res) =>{
     if(!req.body.title){
         return res.status(400).send('Título não informado.')
     }
