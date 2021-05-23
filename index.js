@@ -1,11 +1,12 @@
 const express = require ('express')
 const app = express ()
-const validate = require('./classes/Validate')
+const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const Tasks = require ('./schemas/tasks')
 const Users = require ('./schemas/users')
 const db = mongoose.connection
 const port = 5000
+const saltRounds = 12
 
 mongoose.connect('mongodb://localhost/taskManager', {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true})
 
@@ -46,6 +47,7 @@ const authUserSignUp = (req, res) => {
         console.log(warns)
         return res.status(400).send('Não foi possivel cadastrar. Cheque seu console para mais informacoes!')
     }
+    req.body.pass1 = bcrypt.hashSync(req.body.pass1, saltRounds)
     Users.create(req.body)
         .then(data => res.json(data))
         .catch(err => res.status(400).send(err))
