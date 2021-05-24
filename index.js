@@ -22,6 +22,8 @@ app.get('/', function (req, res){
     res.send('Bem-Vindo!')
 })
 
+// MIDDLEWARE
+
 const authUserSignUp = (req, res) => {
     let warns = {}
     let user = req.body
@@ -104,10 +106,10 @@ app.get('/login', (req, res) => {
 
 app.post('/login', function(req, res){
     let user = {
-        name: req.body.name,
-        pass: req.body.pass
+        user: req.body.name,
+        pass1: req.body.pass
     }
-    const check = new validate(user)
+    Users.find()
     
 
     res.send('Login em manutenção')
