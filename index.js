@@ -14,7 +14,7 @@ app.use(express.json())
 db.on('error', console.error.bind(console, 'Connection error.'))
 db.once('open', () => {
     app.listen(port, () => {
-        console.log(`Conectado à porta ${port} e Banco de Dados Conectado!`)
+        console.log(`Conectado à porta ${port}\nBanco de Dados Conectado!`)
     })
 })
 
@@ -53,7 +53,6 @@ const authUserSignUp = (req, res, next) => {
 
 const genHash = (value) => {
     return bcrypt.hashSync(value, saltRounds)
-    
 }
 
 const authIsLogged = (req, res, next) => {
@@ -80,6 +79,25 @@ app.post('/set-user',authUserSignUp, function(req, res){
 })
 
 app.get('/get-user', (req, res) => {
+    // METODO 1
+    //db.collection('users').createIndex({name: "text"})
+    // Users.find(
+    //     {$text:
+    //         {$search: req.body.name}}
+    // )
+    //     .then(data => res.json(data))
+    //     .catch(err => res.status(400).send(err))
+
+    // METODO 2
+    Users.find({
+        $and: [
+            {name: new RegExp(req.body.name, 'i')},
+            {email: new RegExp(req.body.email, 'i')}
+        ]
+    })
+        .select('name email')
+        .then(data => res.json(data))
+        .catch(err => res.status(400).send(err))
 
 
 })

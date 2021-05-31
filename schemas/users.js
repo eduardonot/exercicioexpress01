@@ -3,6 +3,7 @@ const UserSchema = mongoose.Schema(
     {
         name: {
             type: String,
+            index: true,
             required: true
         },
         telegram_ID: {
@@ -11,6 +12,7 @@ const UserSchema = mongoose.Schema(
         },
         email: {
             type: String,
+            index: true,
             required: true
         },
         pass1:{
