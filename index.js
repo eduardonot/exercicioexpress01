@@ -1,10 +1,9 @@
 const express = require ('express')
-const app = express ()
 const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const Tasks = require ('./schemas/tasks')
 const Users = require ('./schemas/users')
-var session = require('express-session')
+const app = express ()
 const db = mongoose.connection
 const port = 5000
 const saltRounds = 12
@@ -19,14 +18,12 @@ db.once('open', () => {
     })
 })
 
-app.get('/', function (req, res){
-    res.send('Bem-Vindo!')
-})
+
 ////////////////
 // MIDDLEWARE //
 ////////////////
 
-const authUserSignUp = (req, res) => {
+const authUserSignUp = (req, res, next) => {
     let warns = {}
     let user = req.body
     let mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -51,11 +48,12 @@ const authUserSignUp = (req, res) => {
         console.log(warns)
         return res.status(400).send('Não foi possivel cadastrar. Cheque seu console para mais informacoes!')
     }
-    const encodedPassword = bcrypt.hashSync(req.body.pass1, saltRounds)
-    req.body.pass1 = encodedPassword
-    Users.create(req.body)
-        .then(data => res.json(data))
-        .catch(err => res.status(400).send(err))
+    next()
+}
+
+const genHash = (value) => {
+    return bcrypt.hashSync(value, saltRounds)
+    
 }
 
 const authIsLogged = (req, res, next) => {
@@ -69,11 +67,21 @@ const authIsLogged = (req, res, next) => {
 // ROTAS //
 ///////////
 
+app.get('/', function (req, res){
+    res.send('Bem-Vindo!')
+})
+
 // USER
 app.post('/set-user',authUserSignUp, function(req, res){
-    let user = req.body
-    authUserSignUp(user)
-    res.redirect('/login')
+    req.body.pass1 = genHash(req.body.pass1)
+    Users.create(req.body)
+        .then(data => res.json(data))
+        .catch(err => res.status(400).send(err))
+})
+
+app.get('/get-user', (req, res) => {
+
+
 })
 
 // TASKS
@@ -126,7 +134,7 @@ app.post('/login', function(req, res){
     Users.findOne({email:req.body.email})
         .then((data) => {
             console.log(data)
-            bcrypt.compareSync(req.body.pass1, data.pass1) ? res.json({token: 'UAEHUA123CUSAT666@#@#@!ANASDIABO48473cu9wruivrhevyjuhvefuhguiefyge5687'}) : res.status(400).send('Senha inválida')
+            bcrypt.compareSync(req.body.pass1, data.pass1) ? res.json({token: 'asdDad*7(¨&¨%**84#'}) : res.status(400).send('Senha inválida')
         })
         .catch(err => res.status(400).send(err))
     
