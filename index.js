@@ -62,6 +62,9 @@ const authIsLogged = (req, res, next) => {
         next()
     }
 }
+
+//const genToken = 
+
 ///////////
 // ROTAS //
 ///////////
@@ -151,8 +154,7 @@ app.post('/login', function(req, res){
     }
     Users.findOne({email:req.body.email})
         .then((data) => {
-            console.log(data)
-            bcrypt.compareSync(req.body.pass1, data.pass1) ? res.json({token: 'asdDad*7(¨&¨%**84#'}) : res.status(400).send('Senha inválida')
+            bcrypt.compareSync(req.body.pass1, data.pass1) ? res.json({token: '!q@@wW4eFD5c..,.,,.,¨%7*`~?}[+_)XZC//*/WWW.y0ut##'}) : res.status(400).send('Senha inválida')
         })
         .catch(err => res.status(400).send(err))
     
