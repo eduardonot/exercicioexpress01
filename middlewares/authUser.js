@@ -1,4 +1,7 @@
-const authUserSignUp = (req, res, next) => {
+const bcrypt = require('bcrypt')
+const saltRounds = 12
+
+const checkFields = (req, res, next) => {
     let warns = {}
     let user = req.body
     let mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -30,10 +33,12 @@ const genHash = (value) => {
     return bcrypt.hashSync(value, saltRounds)
 }
 
-const authIsLogged = (req, res, next) => {
+const isLogged = (req, res, next) => {
     if(!req.session._id){
         res.status(401).send('Você precisa estar logado!')
     } else {
         next()
     }
 }
+
+module.exports = {checkFields, genHash, isLogged}

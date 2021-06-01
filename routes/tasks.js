@@ -1,4 +1,9 @@
-app.post('/task-create', (req, res) =>{
+const express = require ('express')
+const router = express.Router()
+
+const Tasks = require ('./../schemas/tasks')
+
+router.post('/task', (req, res) =>{
     if(!req.body.title){
         return res.status(400).send('Título não informado.')
     }
@@ -8,7 +13,7 @@ app.post('/task-create', (req, res) =>{
         .catch(err => res.status(400).send(err))
 })
 
-app.get('/tasks-show/:id?:title?:status?', (req, res) => {
+router.get('/task/:id?:title?:status?', (req, res) => {
     const task_id = req.query.id
     const title = req.query.title
     const status = req.query.status
@@ -33,3 +38,5 @@ app.get('/tasks-show/:id?:title?:status?', (req, res) => {
         .then(data => res.json(data))
         .catch(err => res.status(400).send(err))
 }) 
+
+module.exports = router

@@ -1,11 +1,16 @@
-app.post('/set-user',authUserSignUp, function(req, res){
+const express = require ('express')
+const router = express.Router()
+const authUser = require('./../middlewares/authUser')
+const Users = require ('./../schemas/users')
+
+router.post('/user',authUser.checkFields, function(req, res){
     req.body.pass1 = genHash(req.body.pass1)
     Users.create(req.body)
         .then(data => res.json(data))
         .catch(err => res.status(400).send(err))
 })
 
-app.get('/get-user', (req, res) => {
+router.get('/user', (req, res) => {
     // METODO 1
     //db.collection('users').createIndex({name: "text"})
     // Users.find(
@@ -28,3 +33,5 @@ app.get('/get-user', (req, res) => {
 
 
 })
+
+module.exports = router
