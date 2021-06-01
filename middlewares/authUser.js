@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt')
+const jwt = require ('jsonwebtoken')
 const saltRounds = 12
 
+const jwtSecretPassword = '🤣®༼ つ ◕_◕ ༽つ▓WND1l3r4!░«▒▓│🧛‍♂️🧄🔟®©💲✔'
 const checkFields = (req, res, next) => {
     let warns = {}
     let user = req.body
