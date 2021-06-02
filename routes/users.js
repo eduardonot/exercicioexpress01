@@ -4,7 +4,6 @@ const authUser = require('./../middlewares/authUser')
 const Users = require ('./../schemas/users')
 
 router.post('/user',authUser.checkFields, function(req, res){
-    req.body.pass1 = genHash(req.body.pass1)
     Users.create(req.body)
         .then(data => res.json(data))
         .catch(err => res.status(400).send(err))

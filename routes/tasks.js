@@ -1,9 +1,9 @@
 const express = require ('express')
 const router = express.Router()
-
 const Tasks = require ('./../schemas/tasks')
+const authUser = require ('./../middlewares/authUser')
 
-router.post('/task', (req, res) =>{
+router.post('/task', authUser.verifyUserToken, (req, res) =>{
     if(!req.body.title){
         return res.status(400).send('Título não informado.')
     }
@@ -13,7 +13,7 @@ router.post('/task', (req, res) =>{
         .catch(err => res.status(400).send(err))
 })
 
-router.get('/task/:id?:title?:status?', (req, res) => {
+router.get('/task/:id?:title?:status?',authUser.verifyUserToken, (req, res) => {
     const task_id = req.query.id
     const title = req.query.title
     const status = req.query.status
@@ -25,7 +25,7 @@ router.get('/task/:id?:title?:status?', (req, res) => {
         return
     }
     if(task_id){
-        Object.assign(query, {_id:task_id})
+        Object.assign(query, {_id: task_id})
     }
     if(title){
         Object.assign(query, {title:title})
