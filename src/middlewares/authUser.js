@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require ('jsonwebtoken')
-const Users = require ('./../schemas/users')
+const Users = require ('../models/users')
 const saltRounds = 10
 const config = require('./../config')
 

@@ -1,7 +1,7 @@
 const express = require ('express')
 const router = express.Router()
 const authUser = require('./../middlewares/authUser')
-const Users = require ('./../schemas/users')
+const Users = require ('../models/users')
 
 router.post('/user',authUser.checkFields, function(req, res){
     Users.create(req.body)

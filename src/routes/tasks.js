@@ -1,6 +1,6 @@
 const express = require ('express')
 const router = express.Router()
-const Tasks = require ('./../schemas/tasks')
+const Tasks = require ('../models/tasks')
 const authUser = require ('./../middlewares/authUser')
 
 router.post('/task', authUser.isLogged, (req, res) =>{
