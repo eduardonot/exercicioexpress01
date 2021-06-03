@@ -1,9 +1,11 @@
 const bcrypt = require('bcrypt')
 const jwt = require ('jsonwebtoken')
 const Users = require ('./../schemas/users')
-const saltRounds = 12
+const saltRounds = 10
+const config = require('./../config')
 
-const jwtSecretPassword = '0🤣🎆D🎍1🧨l🎨3🥽せひけのR👱🏻‍♂️4👩🏻‍🦱6%$h#.👶🏻ひ👱🏿‍♀️🎅🏿©↘↛↸↹¾ⅤⅫ⅒(☞ﾟヮﾟ)☞☜(ﾟヮﾟ☜)o((⊙﹏⊙))o.®༼ つ ◕_◕ ༽つ▓WND1l3r4!░«▒▓│🧛‍♂️🧄🔟®©💲✔'
+//const jwtSecretPassword = '0🤣🎆D🎍1🧨l🎨3🥽せひけのR👱🏻‍♂️4👩🏻‍🦱6%$h#.👶🏻ひ👱🏿‍♀️🎅🏿©↘↛↸↹¾ⅤⅫ⅒(☞ﾟヮﾟ)☞☜(ﾟヮﾟ☜)o((⊙﹏⊙))o.®༼ つ ◕_◕ ༽つ▓WND1l3r4!░«▒▓│🧛‍♂️🧄🔟®©💲✔'
+
 
 const checkFields = (req, res, next) => {
     let warns = {}
@@ -30,7 +32,8 @@ const checkFields = (req, res, next) => {
         console.log(warns)
         return res.status(400).send('Não foi possivel cadastrar. Cheque seu console para mais informacoes!')
     }
-    req.body.pass1 = genHash(req.body.pass1)
+    const hasehdPass = genHash(req.body.pass1)
+    req.body.pass1 = hasehdPass
     next()
 }
 const genToken = (user) => {
@@ -41,30 +44,16 @@ const genToken = (user) => {
             name: user.name,
             email: user.email
         }
-    }, jwtSecretPassword)
+    }, config.jwtSecretPassword)
 }
 
 
 const verifyToken = (token) =>{
     try{
-        return jwt.verify(token, jwtSecretPassword)
+        return jwt.verify(token, config.jwtSecretPassword)
     } catch (error){
         return false
     }
-}
-
-const verifyUserToken = (req, res, next) => {
-    const token = req.headers.authorization
-    if(!token){
-        return res.status(401).send('Token não informado')
-    }
-    const validToken = verifyToken(token)
-
-    if(validToken){
-        Object.assign(req.body, {userId: validToken.data.id})
-        return next()
-    }
-    return res.status(401).send('Token inválido')
 }
 
 const genHash = (value) => {
@@ -91,11 +80,18 @@ const authLogin = (req, res, next) => {
 }
 
 const isLogged = (req, res, next) => {
-    if(!req.session._id){
-        res.status(401).send('Você precisa estar logado!')
-    } else {
-        next()
+    const token = req.headers.authorization
+    if(!token){
+        return res.status(401).send('Token não informado')
     }
+    const validToken = verifyToken(token)
+
+    if(validToken){
+        Object.assign(req.body, {userId: validToken.data.id})
+        Object.assign(req.headers, {userPayload: validToken.data})
+        return next()
+    }
+    return res.status(401).send('Token inválido')
 }
 
-module.exports = {checkFields, genToken, verifyUserToken, genHash, authLogin,isLogged}
+module.exports = {checkFields, genToken, genHash, authLogin, isLogged}
