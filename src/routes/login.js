@@ -1,8 +1,10 @@
 const express = require ('express')
 const router = express.Router()
-const authUsers = require ('./../middlewares/authUser')
+const fields = require ('./../middlewares/check-fields-login')
+// const pass = require('./../middlewares/check-password')
+const authController = require('./../controllers/auth-controller')
 
-router.post('/login', authUsers.authLogin,function(req, res){
-})
-
-module.exports = router
+module.exports = router =>{
+    router.post('/login',fields.checkFields, authController.login)
+       
+}
