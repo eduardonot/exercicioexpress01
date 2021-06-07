@@ -1,3 +1,6 @@
+const jwt = require('./../helpers/jwt')
+const verifyToken = jwt.verifyToken
+
 module.exports = {
 
     checkToken: (req, res, next) => {
@@ -6,7 +9,6 @@ module.exports = {
             return res.status(401).send('Token não informado')
         }
         const validToken = verifyToken(token)
-
         if(validToken){
             Object.assign(req.body, {userId: validToken.data.id})
             Object.assign(req.headers, {userPayload: validToken.data})
