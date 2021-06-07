@@ -9,24 +9,16 @@ module.exports = {
         if(!userData){
             return Tasks.find((Object.assign(userData.body, {userId: userData.headers.userPayload.id})))
         }
-
-        if(userData.status !== undefined){
-            return Tasks.find({
-                $and: [
-                    {title: new RegExp(userData.title, 'i')},
-                    {description: new RegExp(userData.description, 'i')},
-                    {status: userData.status},
-                    {userId: userData.userId}
-                ]
-            })
-        }
-        return Tasks.find({
-            $and: [
+        const criteria = {
+            $and: [{userId: userData.userId},
                 {title: new RegExp(userData.title, 'i')},
                 {description: new RegExp(userData.description, 'i')},
-                {userId: userData.userId}
-            ]
-        })
+                {status: userData.status}]
+        }
+
+        if(userData.status){return Tasks.find(criteria)}
+        criteria.$and.pop()
+        return Tasks.find(criteria)
     },
 
     findAndUpdate: (userData) => {
