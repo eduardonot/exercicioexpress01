@@ -1,4 +1,4 @@
-
+const hash = require('./../helpers/hash')
 
 module.exports = {
     checkFields: (req, res, next) => {
@@ -26,7 +26,7 @@ module.exports = {
             console.log(warns)
             return res.status(400).send('Não foi possivel cadastrar. Cheque seu console para mais informacoes!')
         }
-        const hasehdPass = genHash(req.body.pass1)
+        const hasehdPass = hash.genHash(req.body.pass1)
         req.body.pass1 = hasehdPass
         next()
     }
