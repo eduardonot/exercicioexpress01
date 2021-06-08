@@ -1,4 +1,4 @@
-const authService = require('./../services/auth-service')
+const authService = require('./../repository/auth-repository')
 const bcrypt = require ('bcrypt')
 const jwt = require ('./../helpers/jwt')
 
