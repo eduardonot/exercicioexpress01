@@ -16,7 +16,9 @@ module.exports = {
                 {status: userData.status}]
         }
 
-        if(userData.status){return Tasks.find(criteria)}
+        if(userData.status){
+            return Tasks.find(criteria)
+        }
         criteria.$and.pop()
         return Tasks.find(criteria)
     },

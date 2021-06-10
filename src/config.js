@@ -11,5 +11,6 @@ module.exports = {
 		useUnifiedTopology: true,
 		useFindAndModify: false,
 		useCreateIndex: true
-	}
+	},
+	telegramToken:'1886102886:AAEWUD8ryaf-XVKFDCz6iafQCb5YcYLNR0g'
 }
