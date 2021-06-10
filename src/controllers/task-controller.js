@@ -1,4 +1,4 @@
-const taskServices = require('./../services/task-services')
+const taskServices = require('../repository/task-repository')
 
 module.exports = {
 
@@ -6,19 +6,21 @@ module.exports = {
         if(!req.body.title){
             return res.status(400).send('Título não informado.')
         }
+        
         taskServices.create(req.body)
             .then(data => res.json(data))
             .catch(err => res.status(400).send(err))
     },
 
     get:(req, res) => {
-        taskServices.search(req.body)
+        taskServices.search(req.body.criteria)
             .then(data => res.json(data))
             .catch(err => res.status(400).send(err))
     },
 
     put:(req, res) => {
-        taskServices.findAndUpdate(req)
+        const params = {_id: req.params.id, userId: req.headers.userPayload.id}
+        taskServices.findAndUpdate(params, req)
             .then((data) => {
                 if (!data){
                     return res.status(404).send('Tarefa não encontrada')
@@ -29,7 +31,8 @@ module.exports = {
     },
 
     delete:(req, res) => {
-        taskServices.findAndUpdate(req)
+        const params = {_id: req.params.id, userId: req.headers.userPayload.id}
+        taskServices.findAndUpdate(params,req)
             .then((data) => {
                 if (!data){
                     return res.status(404).send('Tarefa não encontrada')
