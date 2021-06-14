@@ -1,3 +1,4 @@
+const { bot } = require('../infra/telegram')
 const telegramController = require('./../controllers/telegram-controller')
 const telegram = require ('./../helpers/telegram')
 const services = require("./../services/telegram-requests")
@@ -25,12 +26,7 @@ module.exports = () => {
 	})
 
 	telegram.bot.onText(/\/cadastrar/, (msg) => {
-		console.log(telegram)
-		const name = services.requestName(msg.chat.id)
-		// const email = services.requestEmail(chatId)
-		// const pass1 = services.requestPassword(chatId)
-		// const pass2 = services.requestRePassword(chatId)
-		// const checkPassMatches = services.matchPasswords(chatId, pass1, pass2)
-
+        
+        const getUserSignUpData = services.signUp(msg.chat.id)
 	})
 }
