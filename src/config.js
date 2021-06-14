@@ -1,5 +1,3 @@
-const ports = require('./helpers/ports')
-
 module.exports = {
     appPort: 3000,
     appName: 'API Task Manager',
@@ -12,5 +10,5 @@ module.exports = {
 		useFindAndModify: false,
 		useCreateIndex: true
 	},
-	telegramToken:'1886102886:AAEWUD8ryaf-XVKFDCz6iafQCb5YcYLNR0g'
+	telegramToken:'1886102886:AAGZu48BQl1g73ZHX3IMHfz56I9wVYTf7as'
 }

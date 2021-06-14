@@ -10,6 +10,10 @@ module.exports = {
         
     },
 
+    findByTelegramId: (userData) =>{
+        return Users.findOne({telegram_ID: userData.telegram_ID})
+    },
+
     search: (userData) => {
         return Users.find({
 			$and: [
