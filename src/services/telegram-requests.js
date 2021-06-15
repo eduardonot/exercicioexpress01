@@ -72,18 +72,24 @@ module.exports = {
     // }
 
     signUp:(reqUserId) => {
-        var option = {}
+
+        // USER NAME
+
         telegram.bot.sendChatAction(reqUserId,'typing')
         telegram.bot.sendMessage(reqUserId,'Insira seu Nome:')
-        //telegram.bot.onReplyToMessage
-        console.log(reqUserId)
         let userSignUpData = {}
         telegram.bot.once('text', (inputName) => {
+            const isNameCorrect = checkFields.name(inputName.text)
+            if(isNameCorrect === false){
+                telegram.bot.sendMessage(inputName.chat.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
+                console.log(`Name Status: 400`)
+                return false
+            }
             const name = inputName.text
-            console.log('digitado foi: ' + name)
+            console.log('Nome digitado foi: ' + name)
             Object.assign(userSignUpData, {name:name})
            
-            //EMAIL
+            // EMAIL
             telegram.bot.sendChatAction(reqUserId,'typing')
             telegram.bot.sendMessage(reqUserId, 'Insira seu Email:')
             telegram.bot.once('text', (inputEmail) => {
@@ -97,7 +103,7 @@ module.exports = {
                 console.log('Email digitado foi: '+ email)
                 Object.assign(userSignUpData, {email:email})
 
-                //PASSWORD1
+                // PASSWORD1
                 
                 telegram.bot.sendChatAction(reqUserId,'typing')
                 telegram.bot.sendMessage(reqUserId, 'Insira sua senha.\n\nSua senha deve conter:\n-Mínimo de 8 caracteres\n-Ao menos uma letra maiúscula\n-Ao menos um número\nAo menos um caractere especial')	
@@ -112,7 +118,7 @@ module.exports = {
                     telegram.bot.deleteMessage(reqUserId, inputPass.message_id)
                     console.log('Password 1 Status: 200')
 
-                    //PASSWORD2
+                    // PASSWORD2
                     telegram.bot.sendChatAction(reqUserId,'typing')
                     telegram.bot.sendMessage(reqUserId, 'Insira sua senha novamente...')	
                     telegram.bot.on('text', (inputRePass) => {
@@ -126,7 +132,7 @@ module.exports = {
                         telegram.bot.deleteMessage(reqUserId, inputRePass.message_id)
                         console.log('Password 2 Status: 200')
 
-                        //CHECK IF BOTH PASSWORDS MATCHES EACH OTHER
+                        // CHECK IF BOTH PASSWORDS MATCHES EACH OTHER
                         const isPassMatching = checkFields.passMatch(pass1,pass2)
                         if (isPassMatching === false){
                             telegram.bot.sendMessage(reqUserId, `Senhas não conferem. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
@@ -140,6 +146,8 @@ module.exports = {
                             pass1:hashedPass,
                             telegram_ID: reqUserId
                         })
+                        telegram.bot.sendMessage(reqUserId, `*🎉Cadastrado com sucesso!🎉*`,{'parse_mode':'Markdown'})
+						telegram.bot.removeTextListener(/\/cadastrar/)
                         return userSignUpData
                     })
                 })

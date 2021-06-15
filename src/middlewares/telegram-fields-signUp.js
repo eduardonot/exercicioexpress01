@@ -3,6 +3,13 @@ const telegramInfra = require('./../infra/telegram')
 
 
 module.exports = {
+    name:(field)=>{
+        let nameFormat = /[^\sa-zA-Z|á|à|é|ã|ê|î|ô|ê|ç|ã|ô|ñ|õ|ó|í|ú|ì|]/igu
+        if(field.match(nameFormat)){
+            return false
+        }
+        return true
+    },
     email:(field)=>{
         let mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
         if (!field || !field.match(mailFormat)){
