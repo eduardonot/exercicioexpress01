@@ -1,79 +1,22 @@
 const telegram = require ('./../helpers/telegram')
 const checkFields = require('./../middlewares/telegram-fields-signUp')
 const hash = require('./../helpers/hash')
+const jwt = require('./../helpers/jwt')
 const { bot } = require('../infra/telegram')
 
 module.exports = {	
 
-    // requestName: (userData) => {
-    //     telegram.bot.once('text', (insertName) => {
-    //         if(!insertName.text){
-    //             telegram.bot.sendMessage(userData.chat.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
-    //             console.log(`Name Status: 400`)
-    //             return false
-    //         }
-    //         return insertName.text
-    //     })
-    // },
-
-    // requestEmail: (userData) => {
-    //     telegram.bot.sendMessage(userData.chat.id, 'Insira seu Email:')
-    //     telegram.bot.once('text', (insertEmail) => {
-    //         const isEmailCorrect = checkFields.email(insertEmail.text)
-    //         if(isEmailCorrect === false){
-    //             telegram.bot.sendMessage(insertEmail.chat.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
-    //             console.log(`Email Status: 400`)
-    //             return false
-    //         }
-    //         console.log('Email Status: 200')
-    //         return insertEmail.text
-    //     })
-    // }
-
-    // requestPassword:(chatId)=>{
-    //     telegram.bot.sendMessage(chatId, 'Insira sua senha.\n\nSua senha deve conter:\n-Mínimo de 8 caracteres\n-Ao menos uma letra maiúscula\n-Ao menos um número\nAo menos um caractere especial')	
-    //     telegram.bot.on('text', (insertPass) => {
-    //         let password = insertPass.text
-    //         const isPassCorrect = checkFields.pass(password)
-    //         if(isPassCorrect === false){
-    //             telegram.bot.sendMessage(chatId, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
-    //             console.log(`Password Status: 400`)
-    //             return false
-    //         }
-    //         console.log('Password Status: 200')
-    //         return true
-    //     })
-    // },
-
-    // requestRePassword:(chatId)=>{
-        // telegram.bot.sendMessage(chatId, 'Insira sua senha novamente...')	
-        // telegram.bot.on('text', (insertPass) => {
-        //     let password = insertPass.text
-        //     const isPassCorrect = checkFields.pass(password)
-        //     if(isPassCorrect === false){
-        //         telegram.bot.sendMessage(chatId, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
-        //         console.log(`Password Status: 400`)
-        //         return false
-        //     }
-        //     console.log('Password Status: 200')
-        //     return true
-        // })
-    // },
-
-    // matchPasswords:(chatId,pass1, pass2) =>{
-        // const isPassMatching = checkFields.passMatch(pass1,pass2)
-        // if (isPassMatching === false){
-        //     telegram.bot.sendMessage(chatId, `Senhas não conferem. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
-        //     console.log('Password Match Status: 400')
-        //     return false
-        // }
-        // console.log('Password Match Status: 200')
-        // return true
-    // }
-
     signUp:(reqUserId) => {
 
         // USER NAME
+        async function checkInput (insertYourTelegramDataHere) {
+            const whoToldMeThat = reqUserId
+            if (whoToldMeThat !== insertYourTelegramDataHere){
+                return ''
+            
+            }
+        } 
+
 
         telegram.bot.sendChatAction(reqUserId,'typing')
         telegram.bot.sendMessage(reqUserId,'Insira seu Nome:')
@@ -154,9 +97,20 @@ module.exports = {
             
             })
         })
+    },
 
-        
-        
+    getUserAndSetToken: async(messageData) =>{
+
+		let sessionRegister = {}
+        if(!messageData.token){
+            Object.assign(sessionRegister, {_id: messageData.chat.id, name: messageData.from.first_name, email: messageData.from.username})
+            const telegramUserToken =  jwt.genToken(sessionRegister)
+            Object.assign(messageData,{token:telegramUserToken})
+            console.log('new token assigned')
+            return messageData
+        }
+        console.log('already has message data token')
+        return 
     }
 
     //     telegram.bot.on('text', (chatId) => {

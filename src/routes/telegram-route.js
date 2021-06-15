@@ -1,10 +1,11 @@
 const telegramController = require('./../controllers/telegram-controller')
 const telegram = require ('./../helpers/telegram')
 const services = require("./../services/telegram-requests")
-const debug = require('debug')('node-telegram-bot-api');
+const jwt = require('./../helpers/jwt')
 
 module.exports = () => {	
 	var session = []
+    var sessionRegister = {id:0,token:0}
 	telegram.bot.onText(/\/start/, (msg) => {
 		function getRegisterStatus () {
 			telegramController.checkSignUp(chatId)
@@ -29,24 +30,15 @@ module.exports = () => {
 
 
 	telegram.bot.on('text', (msg) => {
-		
-		function activeSessions(id){
-			
-			if(session.indexOf(id) == -1){
-				session.push(id)
-				console.log(session.indexOf(id))
-			}else{
-				console.log('já tenho')
-			}
-		}
-		//let checkSession = activeSessions(msg.from.id)
-		
+
 		telegram.bot.sendChatAction(msg.chat.id,'typing')
-		console.log(`________________\nLOG:${msg.from.id} digitou ${msg.text}`)
-		
+
+        services.getUserAndSetToken(msg)
+            .then((data) => Object.assign(sessionRegister,{id:data.from.id, token:data.token}))
 	})
 
 	telegram.bot.onText(/\/cadastrar/, (msg) => {
+
 		
         const getUserSignUpData = services.signUp(msg.from.id)
         telegram.bot.clearReplyListeners()
