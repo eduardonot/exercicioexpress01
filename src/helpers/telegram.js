@@ -1,15 +1,8 @@
-const telegramInfra = require('./../infra/telegram')
-const bot = telegramInfra.bot
-/*
-bot.onText(/\/echo (.+)/, (msg, match) => {
-    const chatId = msg.chat.id
-    const resp = match[1]
-    bot.sendMessage(chatId, resp)
-})
-*/
-module.exports = {
-    bot:bot,
-    
+const bot = require('./../infra/telegram')
+const controller = require ('./../controllers/telegram-controller')
+const telegramRepository = require('./../repository/telegram-repository')
+
+module.exports = {    
     listartarefa: (chatId, userData) => {
         bot.onText(/\/listartarefa/, () => {
             const telegramChatId = chatId
@@ -29,6 +22,15 @@ module.exports = {
     newUserGreetings: (chatId, userData) => {
         bot.sendMessage(chatId,  `Olá ${userData.first_name}, verificamos que você ainda não possui um cadastro.\n-\nResponda as etapas a seguir para utilizar este bot!`)
         bot.sendMessage(chatId, `Digite */cadastrar* para continuar`,{parse_mode: "Markdown"})
+    },
+
+    sendMessage:(chatId, text) =>{
+        bot.sendMessage(chatId, text)
+    },
+
+    onStart:(chatId, userData) =>{
+        console.log(controller)
+        // controller.getRegisterStatus(chatId, userData)
     }
     
     

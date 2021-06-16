@@ -2,7 +2,6 @@ const telegram = require ('./../helpers/telegram')
 const checkFields = require('./../middlewares/telegram-fields-signUp')
 const hash = require('./../helpers/hash')
 const jwt = require('./../helpers/jwt')
-const { bot } = require('../infra/telegram')
 
 module.exports = {	
 
