@@ -8,7 +8,7 @@ module.exports = {
             .then((data => bot.sendMessage(userId, `Olá ${userData.chat.first_name}, você já é um usuário cadastrado neste bot!`)))
             .then(bot.removeListener(/\/cadastrar/))
             .catch((err) => bot.sendMessage(userId, `Digite */cadastrar* para continuar`,{parse_mode: "Markdown"}))
-        
+
     },
 
     setTelegramUserName: async(userId, userData) => {
@@ -24,5 +24,19 @@ module.exports = {
             const name = inputName.text
             console.log('Nome digitado foi: ' + name)
         })
+    },
+
+	getUserAndSetToken: async(messageData) =>{
+
+		let sessionRegister = {}
+        if(!messageData.token){
+            Object.assign(sessionRegister, {_id: messageData.chat.id, name: messageData.from.first_name, email: messageData.from.username})
+            const telegramUserToken =  jwt.genToken(sessionRegister)
+            Object.assign(messageData,{token:telegramUserToken})
+            console.log('new token assigned')
+            return messageData
+        }
+        console.log('already has message data token')
+        return
     }
 }

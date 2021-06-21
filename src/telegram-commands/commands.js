@@ -8,20 +8,22 @@ const getCommand = function getCommand (command, userId, userData) {
             break
         }
         case '/cadastrar':{
+
             async function register(userData){
                 let Register = new TelegramRegister(userData)
                 try{
                     const name = await Register.requestName()
                     const email = await Register.requestEmail()
                     const pass = await Register.requestPassword()
-                    console.log(name, email, pass)
+					const rePass = await Register.requestRePassword()
+					const isMatching = await Register.requestIsMatching(pass, rePass)
                 }
                 catch {
                     ((error) => console.log(error))
                 }
                 finally{
                 }
-                
+
             }
             register(userData)
             //const getUserSignUpData = services.signUp(msg.from.id)

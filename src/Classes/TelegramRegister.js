@@ -1,7 +1,7 @@
 const checkFields = require('./../middlewares/telegram-fields-signUp')
 const bot = require('./../infra/telegram')
 
-module.exports = class TelegramRegister {	
+module.exports = class TelegramRegister {
 
     constructor(userData){
         this.name = userData.chat.first_name
@@ -17,9 +17,10 @@ module.exports = class TelegramRegister {
                 const isNameCorrect = checkFields.name(insertName.text)
                 if(isNameCorrect === true){
                     return resolve(insertName.text)
-                    
+
                 }
-                return reject(bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"}))
+				bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
+                return reject(Error ('Nome inválido para os padrões do sistema.'))
             })
         })
 
@@ -31,8 +32,9 @@ module.exports = class TelegramRegister {
             bot.once('text', (insertEmail) => {
                 const isEmailCorrect = checkFields.email(insertEmail.text)
                 if (isEmailCorrect === false) {
-                    return reject(bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" }))
-                    
+					bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
+                    return reject(Error ('Email inválido'))
+
                 }
                 return resolve(insertEmail.text)
             })
@@ -41,49 +43,48 @@ module.exports = class TelegramRegister {
     }
 
     requestPassword () {
-        bot.sendMessage(this.id, 'Insira sua Senha\n Deve conter:\n-Maisculas\n-Minusculas\n-Numeros\n-Caracteres Especiais')	
+        bot.sendMessage(this.id, 'Insira sua Senha\n Deve conter:\n-Maisculas\n-Minusculas\n-Numeros\n-Caracteres Especiais')
         return new Promise ((resolve,reject) =>{
             bot.on('text', (insertPass) => {
                 let password = insertPass.text
-                console.log(insertPass)
                 const isPassCorrect = checkFields.pass(password)
                 if(isPassCorrect === false){
-                    return reject (bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"}))
-                    
+					bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
+                    return reject (Error('Valor digitado não válido'))
+
                 }
-                bot.deleteMessage(this.id, insertPass.message_id)
-                return resolve(insertPass.text)
+                return resolve(password)
             })
         })
     }
 
     requestRePassword () {
-        bot.sendMessage(this.id, 'Insira sua senha novamente...')	
+        bot.sendMessage(this.id, 'Insira sua senha novamente...')
         return new Promise ((resolve,reject) =>{
-            bot.on('text', (insertPass) => {
-                let password = insertPass.text
-                console.log(insertPass)
-                const isPassCorrect = checkFields.pass(password)
+            bot.on('text', (insertRePass) => {
+                let rePassword = insertRePass.text
+                const isPassCorrect = checkFields.pass(rePassword)
                 if(isPassCorrect === false){
-                    return reject (bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"}))
-                    
+					bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
+                    return reject (Error('Valor digitado não válido'))
+
                 }
-                bot.deleteMessage(this.id, insertPass.message_id)
-                return resolve(insertPass.text)
+                return resolve(rePassword)
             })
         })
     }
 
-
-                const isPassMatching = checkFields.passMatch(password, repassword)
-                if (isPassMatching === false) {
-                    bot.sendMessage(this.id, `Senhas não conferem. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
-                    return reject(false)
-                }
-                bot.deleteMessage(this.id, insertRePass.message_id)
-                return resolve(password)
-                })
-            })
-        })
+	requestIsMatching(firstValue, secondValue){
+		return new Promise ((resolve, reject) => {
+			const isPassMatching = checkFields.passMatch(firstValue, secondValue)
+			if (isPassMatching === false) {
+				bot.sendMessage(this.id, `Senhas não conferem. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
+				console.log('Unmatch')
+				return reject(false)
+			}
+			console.log('Matched')
+			return resolve(true)
+		})
     }
+
 }
