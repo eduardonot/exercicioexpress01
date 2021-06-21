@@ -1,28 +1,9 @@
 const bot = require('./../infra/telegram')
+const command = require ('./../telegram-commands/commands')
+const helper = require ('./../helpers/telegram')
 
 module.exports = () => {
 
-
-	// onStart: () => { 
-	// 	bot.onText(/\/start/, (msg) => {
-	// 	telegram.onStart(msg.chat.id, msg)
-	// 	console.log(telegramController)
-		// function getRegisterStatus () {
-		// 	telegramController.checkSignUp(chatId)
-		// 		.then((data) => {
-		// 			if(data){
-		// 				telegram.bot.removeTextListener(/\/cadastrar/)
-		// 				return telegram.oldUserGreetings(chatId, msg.from)
-
-		// 			}
-		// 			return telegram.newUserGreetings(chatId, msg.from)
-		// 		})}
-		// const chatId = msg.chat.id
-		// telegram.bot.sendMessage(chatId, `Olá, ${msg.chat.first_name}!`)
-		// getRegisterStatus()
-		
-	// 	})
-	// }
 
 	bot.on('polling_error', (err) =>{
 		console.log(err)
@@ -30,8 +11,9 @@ module.exports = () => {
 
 
 	bot.on('text', (msg) => {
+		console.log(`${msg.chat.first_name} ${msg.chat.id} >> ${msg.text}`)
 		bot.sendChatAction(msg.chat.id,'typing')
-		
+		command(msg.text, msg.chat.id, msg)
 	})
     //     // services.getUserAndSetToken(msg)
     //     //     .then((data) => Object.assign(sessionRegister,{id:data.from.id, token:data.token}))
