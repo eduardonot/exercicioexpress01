@@ -1,7 +1,8 @@
 const helper = require ('./../helpers/telegram')
 const TelegramRegister = require ('./../Classes/TelegramRegister')
 
-const getCommand = function getCommand (command, userId, userData) {
+
+const getCommand = function getCommand (command, userId, userData, token) {
     switch (command){
         case '/addtarefa':{
             console.log('tarefa')
@@ -9,25 +10,20 @@ const getCommand = function getCommand (command, userId, userData) {
         }
         case '/cadastrar':{
 
-            async function register(userData){
+            async function register(userData, token){
                 let Register = new TelegramRegister(userData)
                 try{
-                    const name = await Register.requestName()
-                    const email = await Register.requestEmail()
-                    const pass = await Register.requestPassword()
-					const rePass = await Register.requestRePassword()
-					const isMatching = await Register.requestIsMatching(pass, rePass)
+                    const name = await Register.requestName(token)
+                    const email = await Register.requestEmail(token)
+                    const pass = await Register.requestPassword(token)
+					const rePass = await Register.requestRePassword(token)
+					const isMatching = await Register.requestIsMatching(pass, rePass, token)
                 }
                 catch {
                     ((error) => console.log(error))
                 }
-                finally{
-                }
-
             }
-            register(userData)
-            //const getUserSignUpData = services.signUp(msg.from.id)
-            //helper.onSignUp(userId, userData)
+            register(userData, token)
             break
         }
         case '/listartarefa':{
@@ -39,6 +35,11 @@ const getCommand = function getCommand (command, userId, userData) {
             helper.onStart(userId, userData)
             break
         }
+
+		case '/sessao':{
+			console.log(`\n\nEstá na sessão, ${userData.chat.id} -> ${token}`)
+			break
+		}
     }
 }
 
