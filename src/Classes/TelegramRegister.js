@@ -4,40 +4,42 @@ const jwt = require('./../helpers/jwt')
 
 module.exports = class TelegramRegister {
 
-    constructor(userData){
-        this.name = userData.chat.first_name
-        this.id = userData.chat.id
-        this.text = userData.text
-        this.userName = userData.chat.username
+    constructor(){
+		this.registerList = []
+		this.SESSION_ID = 0
     }
 
-    requestName(session) {
-		const checkSession = jwt.verifyToken(session)
-		if (checkSession != false){
-			bot.sendMessage(this.id, 'Insira seu Nome')
+    async requestName(token, reqId) {
+		const findRegisterList = await this.registerList.find((x => x.userData.token == token))
+		console.log(this.registerList.length)
+		const checkSession = jwt.verifyToken(this.token)
+		if (reqId === checkSession.data.id && checkSession.data.id === findRegisterList.userData.chat.id){
+			await bot.sendMessage(this.id, 'Insira seu Nome')
 			return new Promise ((resolve, reject) => {
-				bot.once('text', (insertName) => {
+				bot.once('text', async(insertName) => {
 					const isNameCorrect = checkFields.name(insertName.text)
 					if(isNameCorrect === true){
 						return resolve(insertName.text)
 
 					}
-					bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
+					await bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
 					return reject(Error ('Nome inválido para os padrões do sistema.'))
 				})
 			})
 		}
+		throw new Error('Inválido')
     }
 
-    requestEmail (session) {
-		const checkSession =  jwt.verifyToken(session)
-		if (checkSession != false){
-			bot.sendMessage(this.id, 'Insira seu Email')
+    async requestEmail (token, reqId) {
+		const findRegisterList = await this.registerList.find((x => x.userData.token == token))
+		const checkSession = jwt.verifyToken(this.token)
+		if (reqId === checkSession.data.id && checkSession.data.id === findRegisterList.userData.chat.id){
+			await bot.sendMessage(this.id, 'Insira seu Email')
 			return new Promise((resolve,reject) =>{
-				bot.once('text', (insertEmail) => {
+				bot.once('text', async(insertEmail) => {
 					const isEmailCorrect = checkFields.email(insertEmail.text)
 					if (isEmailCorrect === false) {
-						bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
+						await bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
 						return reject(Error ('Email inválido'))
 
 					}
@@ -46,39 +48,42 @@ module.exports = class TelegramRegister {
 
 			})
 		}
+		throw new Error('Inválido')
     }
 
-    requestPassword (session) {
-		const checkSession =  jwt.verifyToken(session)
-		if (checkSession != false){
-			bot.sendMessage(this.id, 'Insira sua Senha\n Deve conter:\n-Maisculas\n-Minusculas\n-Numeros\n-Caracteres Especiais')
+    async requestPassword (token, reqId) {
+		const findRegisterList = await this.registerList.find((x => x.userData.token == token))
+		const checkSession = jwt.verifyToken(this.token)
+		if (reqId === checkSession.data.id && checkSession.data.id === findRegisterList.userData.chat.id){
+			await bot.sendMessage(this.id, 'Insira sua Senha\n Deve conter:\n-Maisculas\n-Minusculas\n-Numeros\n-Caracteres Especiais')
 			return new Promise ((resolve,reject) =>{
-				bot.on('text', (insertPass) => {
+				bot.on('text', async(insertPass) => {
 					let password = insertPass.text
-					var passID1 = insertPass.message_id
 					const isPassCorrect = checkFields.pass(password)
 					if(isPassCorrect === false){
-						bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
+						await bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
 						return reject (Error('Valor digitado não válido'))
 
 					}
+					bot.deleteMessage(insertPass.chat.id,insertPass.message_id)
 					return resolve(password)
 				})
 			})
 		}
+		throw new Error('Inválido')
     }
 
-    requestRePassword (session) {
-		const checkSession =  jwt.verifyToken(session)
-		if (checkSession != false){
-			bot.sendMessage(this.id, 'Insira sua senha novamente...')
+    async requestRePassword (token, reqId) {
+		const findRegisterList = await this.registerList.find((x => x.userData.token == token))
+		const checkSession = jwt.verifyToken(this.token)
+		if (reqId === checkSession.data.id && checkSession.data.id === findRegisterList.userData.chat.id){
+			await bot.sendMessage(this.id, 'Insira sua senha novamente...')
 			return new Promise ((resolve,reject) =>{
-				bot.on('text', (insertRePass) => {
+				bot.on('text', async(insertRePass) => {
 					let rePassword = insertRePass.text
-					var passID2 = insertRePass.message_id
 					const isPassCorrect = checkFields.pass(rePassword)
 					if(isPassCorrect === false){
-						bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
+						await bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
 						return reject (Error('Valor digitado não válido'))
 
 					}
@@ -86,11 +91,13 @@ module.exports = class TelegramRegister {
 				})
 			})
 		}
+		throw new Error('Inválido')
     }
 
-	requestIsMatching(firstValue, secondValue, session){
-		const checkSession =  jwt.verifyToken(session)
-		if (checkSession != false){
+	async requestIsMatching(firstValue, secondValue, token, reqId){
+		const findRegisterList = await this.registerList.find((x => x.userData.token == token))
+		const checkSession = jwt.verifyToken(this.token)
+		if (reqId === checkSession.data.id && checkSession.data.id === findRegisterList.userData.chat.id){
 			return new Promise ((resolve, reject) => {
 				const isPassMatching = checkFields.passMatch(firstValue, secondValue)
 				if (isPassMatching === false) {
@@ -103,6 +110,10 @@ module.exports = class TelegramRegister {
 				return resolve(true)
 			})
 		}
+		throw new Error('Inválido')
     }
 
+	sayMyName(token){
+		return this.registerList.find(x => x.userData.token === token)
+	}
 }

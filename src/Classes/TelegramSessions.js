@@ -7,8 +7,8 @@ module.exports = class TelegramSession {
 	}
 
 
-	setSession(id, userName, messagesCount, token) {
-		this.sessionData = {id:id, userName: userName, messagesCount:messagesCount, token:token}
+	setSession(id, messagesCount, userData) {
+		this.sessionData = {id:id, messagesCount:messagesCount, data:userData}
 		this.sessionList.push(this.sessionData)
 		return this.sessionList
 	}
