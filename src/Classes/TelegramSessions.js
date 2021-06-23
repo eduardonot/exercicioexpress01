@@ -26,7 +26,7 @@ module.exports = class TelegramSession {
 		const getUser = this.sessionList.find(x => x.id == userData.id)
 		if (!userData.token){
 			Object.assign(userToken, {_id: userData.chat.id, name: userData.from.first_name, email: userData.from.username})
-			const telegramUserToken = await jwt.genToken(userToken)
+			const telegramUserToken = jwt.genToken(userToken)
             await Object.assign(userData,{token:telegramUserToken})
             return userData.token
 		}

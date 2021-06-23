@@ -9,8 +9,6 @@ module.exports = () => {
 	})
 
 	bot.on('text', async(msg) => {
-		console.log(`${msg.chat.first_name} ${msg.chat.id} >> ${msg.text}`)
-
 		var defSession = await helper.defineSession(msg)
 			.catch((err) => console.log(err))
 
@@ -18,8 +16,15 @@ module.exports = () => {
 			.catch((err) => console.log(err))
 
 		command(msg.text, defSession)
+		// bot.onText(/\/cadastrar/, () => {command(msg.text, defSession)})
+		// bot.onText(/\/sessao/, () => {command(msg.text, defSession)})
+		// bot.onText(/\/start/, () => {command(msg.text, defSession)})
+		// bot.onText(/\/addtarefa/, () => {command(msg.text, defSession)})
+		// bot.onText(/\/listartarefa/, () => {command(msg.text, defSession)})
+
 
 	})
+
 
 
 }

@@ -4,114 +4,108 @@ const jwt = require('./../helpers/jwt')
 
 module.exports = class TelegramRegister {
 
-    constructor(){
+    constructor(token, reqId){
+		this.token = token
+		this.reqId = reqId
 		this.registerList = []
-		this.SESSION_ID = 0
     }
 
     async requestName(token, reqId) {
-		const findRegisterList = await this.registerList.find((x => x.userData.token == token))
-		console.log(this.registerList.length)
-		const checkSession = jwt.verifyToken(this.token)
-		if (reqId === checkSession.data.id && checkSession.data.id === findRegisterList.userData.chat.id){
-			await bot.sendMessage(this.id, 'Insira seu Nome')
+
+		await bot.sendMessage(this.reqId, 'Insira seu Nome')
 			return new Promise ((resolve, reject) => {
 				bot.once('text', async(insertName) => {
+					if (insertName.chat.id !== this.reqId){
+						await bot.sendMessage(reqId, `Houve um problema durante sua requisição. Tente novamente!`)
+						return reject('conflito de tokens durante o tráfego de dados')
+					}
 					const isNameCorrect = checkFields.name(insertName.text)
 					if(isNameCorrect === true){
+						console.log(insertName.text)
 						return resolve(insertName.text)
-
 					}
-					await bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
+					await bot.sendMessage(this.reqId, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
 					return reject(Error ('Nome inválido para os padrões do sistema.'))
 				})
 			})
-		}
-		throw new Error('Inválido')
+
     }
 
     async requestEmail (token, reqId) {
-		const findRegisterList = await this.registerList.find((x => x.userData.token == token))
-		const checkSession = jwt.verifyToken(this.token)
-		if (reqId === checkSession.data.id && checkSession.data.id === findRegisterList.userData.chat.id){
-			await bot.sendMessage(this.id, 'Insira seu Email')
-			return new Promise((resolve,reject) =>{
-				bot.once('text', async(insertEmail) => {
-					const isEmailCorrect = checkFields.email(insertEmail.text)
-					if (isEmailCorrect === false) {
-						await bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
-						return reject(Error ('Email inválido'))
+		await bot.sendMessage(this.reqId, 'Insira seu Email')
+		return new Promise((resolve,reject) =>{
+			bot.once('text', async(insertEmail) => {
+				if (insertEmail.chat.id !== this.reqId){
+					await bot.sendMessage(reqId, `Houve um problema durante sua requisição. Tente novamente!`)
+					return reject('conflito de tokens durante o tráfego de dados')
+				}
+				const isEmailCorrect = checkFields.email(insertEmail.text)
+				if (isEmailCorrect === false) {
+					await bot.sendMessage(this.reqId, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
+					return reject(Error ('Email inválido'))
 
-					}
-					return resolve(insertEmail.text)
-				})
-
+				}
+				return resolve(insertEmail.text)
 			})
-		}
-		throw new Error('Inválido')
+
+		})
+
     }
 
     async requestPassword (token, reqId) {
-		const findRegisterList = await this.registerList.find((x => x.userData.token == token))
-		const checkSession = jwt.verifyToken(this.token)
-		if (reqId === checkSession.data.id && checkSession.data.id === findRegisterList.userData.chat.id){
-			await bot.sendMessage(this.id, 'Insira sua Senha\n Deve conter:\n-Maisculas\n-Minusculas\n-Numeros\n-Caracteres Especiais')
-			return new Promise ((resolve,reject) =>{
-				bot.on('text', async(insertPass) => {
-					let password = insertPass.text
-					const isPassCorrect = checkFields.pass(password)
-					if(isPassCorrect === false){
-						await bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
-						return reject (Error('Valor digitado não válido'))
+		await bot.sendMessage(this.reqId, 'Insira sua Senha\n Deve conter:\n-Maisculas\n-Minusculas\n-Numeros\n-Caracteres Especiais')
+		return new Promise ((resolve,reject) =>{
+			bot.on('text', async(insertPass) => {
+				if (insertPass.chat.id !== this.reqId){
+					await bot.sendMessage(reqId, `Houve um problema durante sua requisição. Tente novamente!`)
+					return reject('conflito de tokens durante o tráfego de dados')
+				}
+				let password = insertPass.text
+				const isPassCorrect = checkFields.pass(password)
+				if(isPassCorrect === false){
+					await bot.sendMessage(this.reqId, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
+					return reject (Error('Valor digitado não válido'))
 
-					}
-					bot.deleteMessage(insertPass.chat.id,insertPass.message_id)
-					return resolve(password)
-				})
+				}
+				bot.deleteMessage(this.reqId, insertPass.message_id)
+				return resolve(password)
 			})
-		}
-		throw new Error('Inválido')
+		})
     }
 
     async requestRePassword (token, reqId) {
-		const findRegisterList = await this.registerList.find((x => x.userData.token == token))
-		const checkSession = jwt.verifyToken(this.token)
-		if (reqId === checkSession.data.id && checkSession.data.id === findRegisterList.userData.chat.id){
-			await bot.sendMessage(this.id, 'Insira sua senha novamente...')
-			return new Promise ((resolve,reject) =>{
-				bot.on('text', async(insertRePass) => {
-					let rePassword = insertRePass.text
-					const isPassCorrect = checkFields.pass(rePassword)
-					if(isPassCorrect === false){
-						await bot.sendMessage(this.id, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
-						return reject (Error('Valor digitado não válido'))
+		await bot.sendMessage(this.reqId, 'Insira sua senha novamente...')
+		return new Promise ((resolve,reject) =>{
+			bot.on('text', async(insertRePass) => {
+				if (insertRePass.chat.id !== this.reqId){
+					await bot.sendMessage(reqId, `Houve um problema durante sua requisição. Tente novamente!`)
+					return reject('conflito de tokens durante o tráfego de dados')
+				}
+				let rePassword = insertRePass.text
+				const isPassCorrect = checkFields.pass(rePassword)
+				if(isPassCorrect === false){
+					await bot.sendMessage(this.reqId, `Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`,{parse_mode:"Markdown"})
+					return reject (Error('Valor digitado não válido'))
 
-					}
-					return resolve(rePassword)
-				})
+				}
+				return resolve(rePassword)
 			})
-		}
-		throw new Error('Inválido')
+		})
     }
 
 	async requestIsMatching(firstValue, secondValue, token, reqId){
-		const findRegisterList = await this.registerList.find((x => x.userData.token == token))
-		const checkSession = jwt.verifyToken(this.token)
-		if (reqId === checkSession.data.id && checkSession.data.id === findRegisterList.userData.chat.id){
-			return new Promise ((resolve, reject) => {
-				const isPassMatching = checkFields.passMatch(firstValue, secondValue)
-				if (isPassMatching === false) {
-					bot.sendMessage(this.id, `Senhas não conferem. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
-					console.log('Unmatch')
-					return reject(false)
-				}
-				bot.sendMessage(this.id, 'Cadastro concluído com sucesso!')
-				console.log('Matched')
-				return resolve(true)
-			})
-		}
-		throw new Error('Inválido')
-    }
+		return new Promise ((resolve, reject) => {
+			const isPassMatching = checkFields.passMatch(firstValue, secondValue)
+			if (isPassMatching === false) {
+				bot.sendMessage(this.reqId, `Senhas não conferem. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
+				console.log('Unmatch')
+				return reject(false)
+			}
+			bot.sendMessage(this.reqId, 'Cadastro concluído com sucesso!')
+			console.log('Matched')
+			return resolve(true)
+		})
+	}
 
 	sayMyName(token){
 		return this.registerList.find(x => x.userData.token === token)

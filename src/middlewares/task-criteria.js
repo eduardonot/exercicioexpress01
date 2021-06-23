@@ -9,25 +9,8 @@ module.exports = {
         if(!req.body.status){
             criteria.$and.pop()
         }
-        
+
         Object.assign(req.body, {criteria: criteria})
         next()
     }
 }
-
-// Object.assign(userData.body, {userId: req.headers.userPayload.id})
-        
-
-// if(!userData){
-//     return Tasks.find((Object.assign(userData.body, {userId: userData.headers.userPayload.id})))
-// }
-// const criteria = {
-//     $and: [{userId: userData.userId},
-//         {title: new RegExp(userData.title, 'i')},
-//         {description: new RegExp(userData.description, 'i')},
-//         {status: userData.status}]
-// }
-
-// if(userData.status){return Tasks.find(criteria)}
-// criteria.$and.pop()
-// return Tasks.find(criteria)

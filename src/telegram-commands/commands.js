@@ -1,16 +1,15 @@
 const bot = require('../infra/telegram')
 const helper = require ('./../helpers/telegram')
 const getCommand = async function getCommand (text, userData) {
-	switch (text, userData){
+	switch (text){
 		case '/addtarefa':{
 			console.log('tarefa')
 			break
 		}
 		case '/cadastrar':{
-			console.log('cadastrar')
-			await helper.register(msg, msg.data.token)
-			bot.clearTextListeners()
-			bot.clearReplyListeners()
+			console.log(`${userData.data.chat.username} >> cadastrar`)
+			const cadastro = await helper.register(userData, userData.data.token)
+			helper.setNewUser(cadastro)
 			break
 		}
 		case '/listartarefa':{
@@ -19,7 +18,7 @@ const getCommand = async function getCommand (text, userData) {
 		}
 		case '/start':{
 			console.log('start')
-			helper.onStart(userId, userData)
+			helper.onStart(userData.id, userData)
 			break
 		}
 		case '/sessao':{
