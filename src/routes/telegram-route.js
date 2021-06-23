@@ -16,11 +16,6 @@ module.exports = () => {
 			.catch((err) => console.log(err))
 
 		command(msg.text, defSession)
-		// bot.onText(/\/cadastrar/, () => {command(msg.text, defSession)})
-		// bot.onText(/\/sessao/, () => {command(msg.text, defSession)})
-		// bot.onText(/\/start/, () => {command(msg.text, defSession)})
-		// bot.onText(/\/addtarefa/, () => {command(msg.text, defSession)})
-		// bot.onText(/\/listartarefa/, () => {command(msg.text, defSession)})
 
 
 	})

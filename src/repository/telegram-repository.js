@@ -1,8 +1,8 @@
 const Users = require('../models/users')
 
 module.exports = {
-    getTelegramId: (userData) => {
-        return Users.findOne({telegram_ID: userData})
+    getTelegramId: async(userData) => {
+        return await Users.findOne({telegram_ID: userData})
     }
 
 }
