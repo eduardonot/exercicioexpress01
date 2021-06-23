@@ -1,5 +1,6 @@
 const bot = require('../infra/telegram')
 const helper = require ('./../helpers/telegram')
+const controller = require('./../controllers/telegram-controller')
 const getCommand = async function getCommand (text, userData) {
 	switch (text){
 		case '/ajuda':{
@@ -18,22 +19,35 @@ const getCommand = async function getCommand (text, userData) {
 				await bot.sendMessage(userData.id, 'Digite */cadastrar* para realizar seu cadastro',{parse_mode:'Markdown'})
 				break
 			}
-			const cadastro = await helper.registerTask(userData, userData.data.token)
-			console.log(cadastro)
-			helper.refreshSessionStatus(userData, userData.data.token)
+			const setTask = await helper.registerTask(userData, userData.data.token)
+			const getUser = await controller.getUser(userData.id)
+			//const strDate = controller.strToDate(setTask.date)
+			const task = {title: setTask.title, expectedDate: setTask.date, userId: getUser._id, status:true}
+			await controller.setTask(task)
+			await bot.sendMessage(userData.id, `Tarefa cadastrada com sucesso!`)
 			break
 		}
 		case '/cadastrar':{
 			const isSignedUp = await helper.onStart(userData.id, userData)
 			if(!isSignedUp){
 				const cadastro = await helper.registerUser(userData, userData.data.token)
-				helper.setNewUser(cadastro)
+				controller.signUp(cadastro)
 				break
 			}
 			break
 		}
 		case '/listartarefa':{
-			console.log('listar')
+			const getUser = await controller.getUser(userData.id)
+			const getTask = await controller.getTask(getUser._id)
+			if(getTask.length === 0){
+				await bot.sendMessage(userData.id, `Você não possui tarefas cadastradas. Digite /addtarefa para adicionar tarefas.`)
+				break
+			}
+
+			await bot.sendMessage(userData.id, `Estas são as tarefas que você tem cadastrada:`)
+			for (tarefas of getTask){
+				await bot.sendMessage(userData.id, `${tarefas.title} ${tarefas.expectedDate}.`)
+			}
 			break
 		}
 		case '/start':{

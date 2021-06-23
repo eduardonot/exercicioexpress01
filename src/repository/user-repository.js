@@ -7,11 +7,15 @@ module.exports = {
 
     findPreviousSignUp: (userData) =>{
         return Users.findOne({email: userData.email})
-        
+
     },
 
     findByTelegramId: (userData) =>{
         return Users.findOne({telegram_ID: userData.telegram_ID})
+    },
+
+	findByTelegramIdFromApp: (userData) =>{
+        return Users.findOne({telegram_ID: userData})
     },
 
     search: (userData) => {

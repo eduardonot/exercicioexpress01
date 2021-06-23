@@ -1,4 +1,3 @@
-const bot = require('./../infra/telegram')
 const controller = require ('./../controllers/telegram-controller')
 const TelegramRegister = require('./../Classes/TelegramRegister')
 const Register = require('./../infra/Register')
@@ -14,9 +13,10 @@ module.exports = {
 		return getUser
     },
 
-    onSignUp: (chatId, userData) => {controller.setTelegramUserName(chatId, userData)},
+    onSignUp: (chatId, userData) => {c
+		ontroller.setTelegramUserName(chatId, userData)
+	},
 
-	setNewUser: (userData) => {controller.signUp(userData)},
 
 	defineSession: async (userData) => {
 		const getSession = await Session.getUserSession(userData.chat.id)
@@ -80,8 +80,6 @@ module.exports = {
 					console.log(error)
 					tryAgain = true}
 			}
-
-			console.log('still here!')
 			resolve (title)
 		})
 	},
