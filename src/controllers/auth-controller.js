@@ -12,12 +12,12 @@ module.exports = {
                 }
                 const checkPass = bcrypt.compareSync(req.body.pass1, data.pass1)
                 if (checkPass){
-                    telegramHelper.listartarefa(data.telegram_ID, data)
+                    //telegramHelper.listartarefa(data.telegram_ID, data)
                     res.json({token: jwt.genToken(data)})
                 } else {
                     return res.status(400).send('Senha inválida')
                 }
             })
-            .catch(err => res.status(400).send(err))
+            .catch(err => console.log(err))
     }
 }
