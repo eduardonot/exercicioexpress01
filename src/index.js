@@ -1,8 +1,24 @@
-const express = require ('express')
+const express = require('express')
 const db = require('./infra/mongodb')
-const app = express ()
+const app = express()
 const telegramRoute = require('./routes/telegram-route')
+const session = require('express-session')
+const config = require('./config')
 
+app.use(session({
+	secret: config.jwtSecretPassword,
+	resave: false,
+	saveUninitialized: true,
+	cookie: {
+		secure: true,
+		maxAge: 600000
+	}
+}))
+app.use((req, res) => {
+	if (!req.session.views) {
+		req.session.views = {}
+	}
+})
 
 app.use(express.json())
 db.connect(app)

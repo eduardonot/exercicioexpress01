@@ -15,7 +15,7 @@ const UserSchema = mongoose.Schema(
             index: true,
             required: true
         },
-        pass1:{
+        pass1: {
             type: String,
             required: true
         }

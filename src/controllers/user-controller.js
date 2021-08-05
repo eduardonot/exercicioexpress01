@@ -4,7 +4,7 @@ module.exports = {
 	create: (req, res) => {
 		userService.findPreviousSignUp(req.body)
 			.then(data => {
-				if(data){
+				if (data) {
 					return res.status(400).send('Usuario já cadastrado!')
 				}
 				userService.signUp(req.body)

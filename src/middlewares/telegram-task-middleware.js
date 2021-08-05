@@ -3,14 +3,12 @@ const telegramHelper = require('./../helpers/telegram')
 
 module.exports = {
 
-    save: (req, res) =>{
-        
+    save: (req, res) => {
     },
 
-    get: (req, res) =>{
+    get: (req, res) => {
         taskRepository.search()
             .then((result) => telegramHelper.resMessage())
-            .catch((err) => {})
+            .catch((err) => console.log(err))
     }
-
 }

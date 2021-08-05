@@ -1,11 +1,10 @@
 // const bcrypt = require('bcrypt')
-//const jwt = require ('jsonwebtoken')
+// const jwt = require ('jsonwebtoken')
 // const Users = require ('../models/users')
 // const saltRounds = 10
 // const config = require('./../config')
 
-//const jwtSecretPassword = '0🤣🎆D🎍1🧨l🎨3🥽せひけのR👱🏻‍♂️4👩🏻‍🦱6%$h#.👶🏻ひ👱🏿‍♀️🎅🏿©↘↛↸↹¾ⅤⅫ⅒(☞ﾟヮﾟ)☞☜(ﾟヮﾟ☜)o((⊙﹏⊙))o.®༼ つ ◕_◕ ༽つ▓WND1l3r4!░«▒▓│🧛‍♂️🧄🔟®©💲✔'
-
+// const jwtSecretPassword = '0🤣🎆D🎍1🧨l🎨3🥽せひけのR👱🏻‍♂️4👩🏻‍🦱6%$h#.👶🏻ひ👱🏿‍♀️🎅🏿©↘↛↸↹¾ⅤⅫ⅒(☞ﾟヮﾟ)☞☜(ﾟヮﾟ☜)o((⊙﹏⊙))o.®༼ つ ◕_◕ ༽つ▓WND1l3r4!░«▒▓│🧛‍♂️🧄🔟®©💲✔'
 
 // const checkFields = (req, res, next) => {
 //     let warns = {}
@@ -46,7 +45,6 @@
 //         }
 //     }, config.jwtSecretPassword)
 // }
-
 
 // const verifyToken = (token) =>{
 //     try{
@@ -94,4 +92,4 @@
 //     return res.status(401).send('Token inválido')
 // }
 
-//module.exports = {checkFields, genToken, genHash, authLogin, isLogged}
+// module.exports = {checkFields, genToken, genHash, authLogin, isLogged}

@@ -1,7 +1,7 @@
 const Tasks = require('../models/tasks')
 
 module.exports = {
-    create:(userData) =>{
+    create: (userData) => {
         return Tasks.create(userData)
     },
 

@@ -10,5 +10,4 @@ module.exports = {
     compareHash: (currentField, hash) => {
         return bcrypt.compareSync(currentField, hash)
     }
-
 }
