@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" media="screen,projection">
+		<link rel="stylesheet" href="./css/index.css">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Task Manager</title>
+	</head>
+	<body class="grey lighten-3">
+		<div class="container">
+			<div class="row z-depth-1 center">
+				<div class="logo"></div>
+				<ul class="collapsible">
+					<li>
+						<div class="collapsible-header waves-effect waves-light light-blue darken-1 btn-large">
+							<div class="col s12 center">entrar</div>
+						</div>
+						<div class="collapsible-body">
+							<input placeholder="USUARIO" id="login-user" type="text" class="validate">
+							<input placeholder="SENHA" id="login-pass" type="password" class="validate">
+							<button class="btn-large waves-effect waves-light" type="submit" name="login">
+								confirmar
+							</button>
+						</div>
+					</li>
+					<li>
+						<div class="collapsible-header waves-effect waves-light red darken-1 btn-large">
+							<div class="col s12 center">CADASTRAR</div>
+						</div>
+						<div class="collapsible-body">
+							<input placeholder="NOME" id="name" type="text" class="validate">
+							<input placeholder="USUARIO" id="user" type="text" class="validate">
+							<input placeholder="EMAIL" id="email" type="text" class="validate">
+							<input placeholder="SENHA" id="pass" type="password" class="validate">
+							<input placeholder="REPITA A SENHA" id="repass" type="password" class="validate">
+							<button class="btn-large waves-effect waves-light" type="submit" name="signup">
+								confirmar
+							</button>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+		<script>
+			var elem = document.querySelectorAll('.collapsible')
+			var instance = M.Collapsible.init(elem)
+		</script>
+	</body>
+</html>

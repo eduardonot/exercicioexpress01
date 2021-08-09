@@ -119,18 +119,18 @@ module.exports = class TelegramRegister {
 
 	// REGISTRO DE TAREFAS
 	async requestTitle (token, reqId) {
-		await bot.sendMessage(this.reqId, `Insira sua tarefa\n Ex. "_Médico: Dr. Silva no dia 21/12/2021_"`, { parse_mode: 'Markdown' })
+		// await bot.sendMessage(this.reqId, `Insira sua tarefa\n Ex. "_Médico: Dr. Silva no dia 21/12/2021_"`, { parse_mode: 'Markdown' })
 		return new Promise((resolve, reject) => {
 			bot.once('text', async (insertTask) => {
 				if (insertTask.chat.id !== this.reqId) {
-					await bot.sendMessage(reqId, `Houve um problema durante sua requisição. Tente novamente!`)
+					// await bot.sendMessage(reqId, `Houve um problema durante sua requisição. Tente novamente!`)
 					return reject('conflito de tokens durante o tráfego de dados')
 				}
 				const getTaskPatterns = checkDate.compareInput(insertTask.text)
 				if (getTaskPatterns !== false) {
 					return resolve(getTaskPatterns)
 				}
-				await bot.sendMessage(this.reqId, `Task: Você precisa fornecer um dado válido. Tente novamente.`, { parse_mode: "Markdown" })
+				// await bot.sendMessage(this.reqId, `Task: Você precisa fornecer um dado válido. Tente novamente.`, { parse_mode: "Markdown" })
 				return reject(Error('Nome inválido para os padrões do sistema.'))
 			})
 		})
