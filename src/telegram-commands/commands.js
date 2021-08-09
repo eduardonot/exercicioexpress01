@@ -4,7 +4,6 @@ const helper = require('./../helpers/telegram')
 const controller = require('./../controllers/telegram-controller')
 
 const getCommand = async function getCommand (data) {
-	console.log(data)
 	switch (data.messageContent) {
 		case '/ajuda': {
 			await bot.sendMessage(data.userData.id, `*AJUDA*:\nEstou aqui para te ajudar e espero poder ser útil!`, { parse_mode: 'Markdown' })
@@ -22,6 +21,7 @@ const getCommand = async function getCommand (data) {
 				await bot.sendMessage(data.userData.id, 'Digite */cadastrar* para realizar seu cadastro', { parse_mode: 'Markdown' })
 				break
 			}
+			await bot.sendMessage(data.userData.id, `Insira sua tarefa\n Ex. "_Médico: Dr. Silva no dia 21/12/2021_"`, { parse_mode: 'Markdown' })
 			const setTask = await helper.registerTask(data.userData, data.userData.data.token)
 			const getUser = await controller.getUser(data.userData.id)
 			const task = { title: setTask.title, expectedDate: setTask.date, userId: getUser._id, status: true }

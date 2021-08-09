@@ -73,12 +73,12 @@ module.exports = {
 				try {
 					const title = await newTask.requestTitle(token, userData.id)
 					tryAgain = false
+					resolve(title)
 				} catch (error) {
 					console.log(error)
 					tryAgain = true
-}
+				}
 			}
-			resolve(title)
 		})
 	},
 
