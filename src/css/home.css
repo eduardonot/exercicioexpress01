@@ -1,0 +1,8 @@
+.fc-prev-button, .fc-next-button{
+	background-color: #1e88e5 !important;
+	border-color: white !important;
+}
+
+.fc-toolbar-title{
+	text-transform: uppercase !important;
+}
