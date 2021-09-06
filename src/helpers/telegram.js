@@ -42,13 +42,13 @@ module.exports = {
 				while (tryAgain === true) {
 					try {
 						const name = await newUser.requestName(token, userData.id)
-						console.log(name)
+						// console.log(name)
 						const email = await newUser.requestEmail(token, userData.id)
-						console.log(email)
+						// console.log(email)
 						const pass = await newUser.requestPassword(token, userData.id)
-						console.log(pass)
+						// console.log(pass)
 						const rePass = await newUser.requestRePassword(token, userData.id)
-						console.log(rePass)
+						// console.log(rePass)
 						const isMatching = await newUser.requestIsMatching(pass, rePass, token, userData.id)
 
 						tryAgain = false

@@ -30,7 +30,7 @@ module.exports = class TelegramRegister {
 				}
 				const isNameCorrect = checkFields.name(insertName.text)
 				if (isNameCorrect === true) {
-					console.log(insertName.text)
+					// console.log(insertName.text)
 					return resolve(insertName.text)
 				}
 				await bot.sendMessage(this.reqId, `Nome: Você precisa fornecer um dado válido. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
@@ -106,12 +106,12 @@ module.exports = class TelegramRegister {
 			const isPassMatching = checkFields.passMatch(firstValue, secondValue)
 			if (isPassMatching === false) {
 				bot.sendMessage(this.reqId, `Senhas não conferem. Digite */cadastrar* e tente novamente.`, { parse_mode: "Markdown" })
-				console.log('Unmatch')
+				// console.log('Unmatch')
 				return reject(false)
 			}
 			const hashedPassword = hash.genHash(firstValue)
 			bot.sendMessage(this.reqId, 'Cadastro concluído com sucesso!')
-			console.log('Matched')
+			// console.log('Matched')
 			return resolve(hashedPassword)
 		})
 	}
