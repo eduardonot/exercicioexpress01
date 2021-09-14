@@ -14,11 +14,6 @@ app.use(session({
 		maxAge: 600000
 	}
 }))
-app.use((req, res) => {
-	if (!req.session.views) {
-		req.session.views = {}
-	}
-})
 
 app.use(express.json())
 db.connect(app)
