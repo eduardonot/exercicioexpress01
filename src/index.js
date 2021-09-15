@@ -1,8 +1,8 @@
 const express = require('express')
+const session = require('express-session')
 const db = require('./infra/mongodb')
 const app = express()
 const telegramRoute = require('./routes/telegram-route')
-const session = require('express-session')
 const config = require('./config')
 
 app.use(session({
