@@ -7,8 +7,7 @@ const UserSchema = mongoose.Schema(
             required: true
         },
         telegram_ID: {
-            type: Number,
-            required: true
+            type: Number
         },
         email: {
             type: String,

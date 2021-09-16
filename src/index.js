@@ -5,18 +5,17 @@ const telegramRoute = require('./routes/telegram-route')
 const session = require('express-session')
 const config = require('./config')
 
+app.use(express.json())
+db.connect(app)
+
 app.use(session({
 	secret: config.jwtSecretPassword,
 	resave: false,
 	saveUninitialized: true,
 	cookie: {
-		secure: true,
-		maxAge: 600000
+		maxAge: 1000 * 24 * 60 * 60
 	}
 }))
-
-app.use(express.json())
-db.connect(app)
 
 const rootRoute = require('./routes/root')
 const loginRoute = require('./routes/login')

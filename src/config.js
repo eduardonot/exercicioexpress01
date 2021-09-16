@@ -1,5 +1,5 @@
 module.exports = {
-    appPort: 4000,
+    appPort: 3000,
     appName: 'API Task Manager',
 	// mongoURL: `mongodb+srv://admin:Admin1234@cluster0.jfhep.mongodb.net/taskManager?retryWrites=true&w=majority`,
     mongoURL: 'mongodb://localhost/taskManager',

@@ -8,7 +8,7 @@ module.exports = {
 					return res.status(400).send('Usuario já cadastrado!')
 				}
 				userService.signUp(req.body)
-					.then(res.status(201).send('Usuário cadastrado!'))
+					.then(data => res.status(201).send('Usuário cadastrado! '))
 					.catch(err => res.status(400).send(err))
 			})
 			.catch(err => res.status(400).send(err))

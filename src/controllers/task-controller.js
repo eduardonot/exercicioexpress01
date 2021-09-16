@@ -3,8 +3,8 @@ const taskServices = require('../repository/task-repository')
 module.exports = {
 
     post: (req, res) => {
-        if (!req.body.title) {
-            return res.status(400).send('Título não informado.')
+        if (!req.body.title || !req.body.expectedDate) {
+            return res.status(400).send('Insira Title e Date.')
         }
 
         taskServices.create(req.body)

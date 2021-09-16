@@ -17,7 +17,8 @@ const TaskSchema = mongoose.Schema(
             default: false
         },
         expectedDate: {
-            type: String
+            type: String,
+            required: true
         },
         doneDate: {
             type: Date
