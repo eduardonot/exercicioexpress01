@@ -2,19 +2,26 @@ const express = require('express')
 const db = require('./infra/mongodb')
 const app = express()
 const telegramRoute = require('./routes/telegram-route')
-const session = require('express-session')
+const cookieSession = require('cookie-session')
 const config = require('./config')
 
 app.use(express.json())
 db.connect(app)
 
-app.use(session({
+// app.use(session({
+// 	secret: config.jwtSecretPassword,
+// 	resave: false,
+// 	saveUninitialized: true,
+// 	cookie: {
+// 		maxAge: 1000 * 24 * 60 * 60
+// 	}
+// }))
+
+app.use(cookieSession({
+	name: 'session',
 	secret: config.jwtSecretPassword,
-	resave: false,
-	saveUninitialized: true,
-	cookie: {
-		maxAge: 1000 * 24 * 60 * 60
-	}
+	keys: ['chave1'],
+	maxAge: 24 * 60 * 60 * 1000
 }))
 
 const rootRoute = require('./routes/root')
