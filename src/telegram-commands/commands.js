@@ -40,16 +40,18 @@ const getCommand = async function getCommand (data) {
 		}
 		case '/listartarefa': {
 			const getUser = await controller.getUser(data.userData.id)
-			const getTask = await controller.getTask(getUser._id)
-			if (getTask.length === 0) {
-				await bot.sendMessage(data.userData.id, `Você não possui tarefas cadastradas. Digite /addtarefa para adicionar tarefas.`)
-				break
-			}
+            if (getUser) {
+                const getTask = await controller.getTask(getUser._id)
+                if (getTask.length === 0) {
+                    await bot.sendMessage(data.userData.id, `Você não possui tarefas cadastradas. Digite /addtarefa para adicionar tarefas.`)
+                    break
+                }
 
-			await bot.sendMessage(data.userData.id, `Estas são as tarefas que você tem cadastrada:`)
-			for (tarefas of getTask) {
-				await bot.sendMessage(data.userData.id, `${tarefas.title} ${tarefas.expectedDate}.`)
-			}
+                await bot.sendMessage(data.userData.id, `Estas são as tarefas que você tem cadastrada:`)
+                for (tarefas of getTask) {
+                    await bot.sendMessage(data.userData.id, `${tarefas.title} ${tarefas.expectedDate}.`)
+                }
+            }
 			break
 		}
 		case '/start': {
