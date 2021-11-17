@@ -4,7 +4,7 @@ const search = require('./../middlewares/task-criteria')
 
 module.exports = router => {
     router.post('/task', controller.post)
-    router.get('/task/:id?:title?:status?:description?', auth.checkToken, search.searchCriteria, controller.get)
+    router.get('/task/:id?:title?:status?:description?', controller.get)
     router.put('/task/:id', controller.put)
     router.delete('/task/:id', controller.delete)
 }

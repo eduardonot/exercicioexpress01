@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const TaskSchema = mongoose.Schema(
     {
         userId: {
-            type: String,
-            required: true
+            type: String
+            // required: true
         },
         title: {
             type: String,
@@ -16,13 +16,22 @@ const TaskSchema = mongoose.Schema(
             type: Boolean,
             default: false
         },
-        expectedDate: {
-            type: String,
+        date: {
+            type: Date,
             required: true
         },
         doneDate: {
             type: Date
-        }
+        },
+		tags: {
+			type: Array
+		},
+		icon: {
+			type: String
+		},
+		favorite: {
+			type: Boolean
+		}
     },
     {
         timestamps: true

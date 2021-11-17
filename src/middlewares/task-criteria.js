@@ -2,8 +2,8 @@ module.exports = {
     searchCriteria: (req, res, next) => {
         const criteria = {
             $and: [{ userId: req.body.userId },
-                { title: new RegExp(req.body.title, 'i') },
-                { description: new RegExp(req.body.description, 'i') },
+                { title: req.body.title },
+                { description: req.body.description },
                 { status: req.body.status }]
         }
         if (!req.body.status) {
