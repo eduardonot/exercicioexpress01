@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('./../helpers/jwt')
 
 module.exports = {
-    login: (req, res) => {
+    login: (req, res, next) => {
         authService.post(req.body)
             .then((data) => {
                 if (!data) {
@@ -12,6 +12,7 @@ module.exports = {
                 const checkPass = bcrypt.compareSync(req.body.pass1, data.pass1)
                 if (checkPass) {
                     res.json({ token: jwt.genToken(data) })
+                    next()
                 } else {
                     return res.status(400).send('Senha inválida')
                 }

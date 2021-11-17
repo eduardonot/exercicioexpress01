@@ -4,8 +4,10 @@ const app = express()
 const telegramRoute = require('./routes/telegram-route')
 const cookieSession = require('cookie-session')
 const config = require('./config')
+const cors = require('cors')
 
 app.use(express.json())
+app.use(cors())
 db.connect(app)
 
 // app.use(session({
