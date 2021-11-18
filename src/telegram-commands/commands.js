@@ -24,7 +24,7 @@ const getCommand = async function getCommand (data) {
 			await bot.sendMessage(data.userData.id, `Insira sua tarefa\n Ex. "_Médico: Dr. Silva no dia 21/12/2021_"`, { parse_mode: 'Markdown' })
 			const setTask = await helper.registerTask(data.userData, data.userData.data.token)
 			const getUser = await controller.getUser(data.userData.id)
-			const task = { title: setTask.title, expectedDate: setTask.date, userId: getUser._id, status: true }
+			const task = { title: setTask.title.trim(), date: setTask.date.trim(), userId: getUser._id, status: false }
 			await controller.setTask(task)
 			await bot.sendMessage(data.userData.id, `Tarefa cadastrada com sucesso!`)
 			break
@@ -49,7 +49,7 @@ const getCommand = async function getCommand (data) {
 
                 await bot.sendMessage(data.userData.id, `Estas são as tarefas que você tem cadastrada:`)
                 for (tarefas of getTask) {
-                    await bot.sendMessage(data.userData.id, `${tarefas.title} ${tarefas.expectedDate}.`)
+                    await bot.sendMessage(data.userData.id, `${tarefas.title} ${tarefas.date}.`)
                 }
             }
 			break
