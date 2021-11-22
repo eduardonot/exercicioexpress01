@@ -32,7 +32,7 @@ module.exports = {
     },
 
     delete: (req, res) => {
-        const params = { _id: req.params.id, userId: req.headers.userPayload.id }
+        const params = { _id: req.params.id}
         taskServices.findAndDelete(params, req)
             .then((data) => {
                 if (!data) {
@@ -42,4 +42,15 @@ module.exports = {
             })
             .catch(err => res.status(400).send('Não foi possível realizar sua requisição\n' + err))
     }
+    // delete: (req, res) => {
+    //     const params = { _id: req.params.id, userId: req.headers.userPayload.id }
+    //     taskServices.findAndDelete(params, req)
+    //         .then((data) => {
+    //             if (!data) {
+    //                 return res.status(404).send('Tarefa não encontrada')
+    //             }
+    //             res.status(200).send('Tarefa excluída com sucesso!')
+    //         })
+    //         .catch(err => res.status(400).send('Não foi possível realizar sua requisição\n' + err))
+    // }
 }

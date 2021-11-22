@@ -24,7 +24,9 @@ const getCommand = async function getCommand (data) {
 			await bot.sendMessage(data.userData.id, `Insira sua tarefa\n Ex. "_Médico: Dr. Silva no dia 21/12/2021_"`, { parse_mode: 'Markdown' })
 			const setTask = await helper.registerTask(data.userData, data.userData.data.token)
 			const getUser = await controller.getUser(data.userData.id)
-			const task = { title: setTask.title.trim(), date: setTask.date.trim(), userId: getUser._id, status: false }
+			const formatedDate = setTask.date.trim().split('/')
+			const newDate = `${formatedDate[1]}/${formatedDate[0]}/${formatedDate[2]}`
+			const task = { title: setTask.title.trim(), date: newDate, userId: getUser._id, status: false }
 			await controller.setTask(task)
 			await bot.sendMessage(data.userData.id, `Tarefa cadastrada com sucesso!`)
 			break
