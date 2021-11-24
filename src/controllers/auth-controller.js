@@ -11,7 +11,7 @@ module.exports = {
                 }
                 const checkPass = bcrypt.compareSync(req.body.pass1, data.pass1)
                 if (checkPass) {
-                    res.json({ token: jwt.genToken(data) })
+                    res.json({ token: jwt.genToken(data), user: { name: data.name, email: data.email, picture: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fd2kf8ptlxcina8.cloudfront.net%2FAI80KTLQZO-preview.png&f=1&nofb=1' } })
                     next()
                 } else {
                     return res.status(400).send('Senha inválida')
