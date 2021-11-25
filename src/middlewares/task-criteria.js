@@ -1,6 +1,5 @@
 module.exports = {
     searchCriteria: (req, res, next) => {
-        console.log(req.body)
         const criteria = {
             $and: [{ userId: req.body.userId },
                 { title: req.body.title },
