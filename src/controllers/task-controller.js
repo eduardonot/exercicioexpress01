@@ -13,7 +13,8 @@ module.exports = {
     },
 
     get: (req, res) => {
-        taskServices.search(req.body.criteria)
+        console.log(req.body)
+        taskServices.search({ userId: req.body.userId })
             .then(data => res.json(data))
             .catch(err => res.status(400).send(err))
     },
