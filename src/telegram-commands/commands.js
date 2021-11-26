@@ -26,7 +26,7 @@ const getCommand = async function getCommand (data) {
 			const getUser = await controller.getUser(data.userData.id)
 			const formatedDate = setTask.date.trim().split('/')
 			const newDate = `${formatedDate[1]}/${formatedDate[0]}/${formatedDate[2]}`
-			const task = { title: setTask.title.trim(), date: newDate, userId: getUser._id, status: false }
+			const task = { title: setTask.title.trim(), date: newDate, userId: getUser._id, status: false, tags: ['Telegram BOT'], icon: 'notifications' }
 			await controller.setTask(task)
 			await bot.sendMessage(data.userData.id, `Tarefa cadastrada com sucesso!`)
 			break
@@ -48,10 +48,11 @@ const getCommand = async function getCommand (data) {
                     await bot.sendMessage(data.userData.id, `Você não possui tarefas cadastradas. Digite /addtarefa para adicionar tarefas.`)
                     break
                 }
-
                 await bot.sendMessage(data.userData.id, `Estas são as tarefas que você tem cadastrada:`)
                 for (tarefas of getTask) {
-                    await bot.sendMessage(data.userData.id, `${tarefas.title} ${tarefas.date}.`)
+					const getTaskDate = tarefas.date.split('/')
+					const newDate = `${getTaskDate[1]}/${getTaskDate[0]}/${getTaskDate[2]}`
+                    await bot.sendMessage(data.userData.id, `${tarefas.title} ${newDate}.`)
                 }
             }
 			break

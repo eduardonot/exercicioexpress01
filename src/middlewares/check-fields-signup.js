@@ -10,9 +10,9 @@ module.exports = {
         if (!user.name) {
             Object.assign(warns, { totalWarns: totalWarns += 1, nameWarn: "Parâmetro 'name' Inválido" })
         }
-        if (!user.telegram_ID || user.telegram_ID === undefined) {
-            Object.assign(warns, { totalWarns: totalWarns += 1, telegramWarn: "Parâmetro 'telegram_ID' Inválido" })
-        }
+        // if (!user.telegram_ID || user.telegram_ID === undefined) {
+        //     Object.assign(warns, { totalWarns: totalWarns += 1, telegramWarn: "Parâmetro 'telegram_ID' Inválido" })
+        // }
         if (!user.email || !user.email.match(mailFormat)) {
             Object.assign(warns, { totalWarns: totalWarns += 1, mailWarn: "Parâmetro 'email' Inválido" })
         }
