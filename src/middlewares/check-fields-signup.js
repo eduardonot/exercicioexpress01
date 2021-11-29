@@ -8,23 +8,26 @@ module.exports = {
         const passFormat = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/
         let totalWarns = 0
         if (!user.name) {
-            Object.assign(warns, { totalWarns: totalWarns += 1, nameWarn: "Parâmetro 'name' Inválido" })
+			totalWarns += 1
+            Object.assign(warns, { nameWarn: "Nome inválido" })
         }
         // if (!user.telegram_ID || user.telegram_ID === undefined) {
         //     Object.assign(warns, { totalWarns: totalWarns += 1, telegramWarn: "Parâmetro 'telegram_ID' Inválido" })
         // }
         if (!user.email || !user.email.match(mailFormat)) {
-            Object.assign(warns, { totalWarns: totalWarns += 1, mailWarn: "Parâmetro 'email' Inválido" })
+			totalWarns += 1
+            Object.assign(warns, { mailWarn: "Email Inválido" })
         }
         if (user.pass1 !== user.pass2) {
-            Object.assign(warns, { totalWarns: totalWarns += 1, equalPassWarn: "Parâmetros 'pass1' e 'pass2' não são idênticos" })
+			totalWarns += 1
+            Object.assign(warns, { equalPassWarn: "Senhas não são idênticas" })
         }
         if (!user.pass1 || !user.pass2 || !user.pass1.match(passFormat) || !user.pass2.match(passFormat)) {
-            Object.assign(warns, { totalWarns: totalWarns += 1, passPatternWarn: "Parâmetro 'pass1' e 'pass2' requer Maiúsculas, Minúsculas, Números e Carac. Especiais!" })
+			totalWarns += 1
+            Object.assign(warns, { passPatternWarn: "Senhas requerem Maiúsculas, Minúsculas, Números e Carac. Especiais!" })
         }
-        if (warns.totalWarns > 0) {
-            console.log(warns)
-            return res.status(400).send('Não foi possivel cadastrar. Cheque seu console para mais informacoes!')
+        if (totalWarns > 0) {
+            return res.status(400).send(warns)
         }
         const hasehdPass = hash.genHash(req.body.pass1)
         req.body.pass1 = hasehdPass
